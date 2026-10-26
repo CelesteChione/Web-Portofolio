@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Muhammad Ibnu Abbas — Portfolio</title>
+    
+    <!-- Google Fonts: Playfair Display (Serif/Elegant) & Outfit (Sans/Fun) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        bgWarm: '#FAF9F6',
+                        surface: '#FFFFFF',
+                        textDark: '#1C1917',
+                        textMuted: '#57534E',
+                        textLight: '#A8A29E',
+                        accent: '#E05D36',
+                        accentDark: '#C24E2D',
+                        accentLight: '#FFEDD5',
+                        accentPastel: '#FFF7ED',
+                        pastelBlue: '#DBEAFE',
+                        pastelGreen: '#D1FAE5',
+                        pastelPurple: '#EDE9FE',
+                        borderSoft: '#E7E5E4',
+                    },
+                    borderRadius: {
+                        '3xl': '1.5rem',
+                        '4xl': '2rem',
+                        '5xl': '2.5rem',
+                        '6xl': '3rem',
+                    },
+                    keyframes: {
+                        'float': {
+                            '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+                            '50%': { transform: 'translateY(-12px) rotate(1deg)' },
+                        },
+                        'float-reverse': {
+                            '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+                            '50%': { transform: 'translateY(-8px) rotate(-1.5deg)' },
+                        },
+                        'pulse-glow': {
+                            '0%, 100%': { opacity: '0.3', transform: 'scale(1)' },
+                            '50%': { opacity: '0.5', transform: 'scale(1.05)' },
+                        },
+                        'slide-up': {
+                            '0%': { transform: 'translateY(100%)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        'spin-slow': {
+                            '0%': { transform: 'rotate(0deg)' },
+                            '100%': { transform: 'rotate(360deg)' },
+                        },
+                        'marquee': {
+                            '0%': { transform: 'translateX(0)' },
+                            '100%': { transform: 'translateX(-50%)' },
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'float-reverse': 'float-reverse 7s ease-in-out infinite',
+                        'pulse-glow': 'pulse-glow 4s ease-in-out infinite',
+                        'slide-up': 'slide-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'spin-slow': 'spin-slow 20s linear infinite',
+                        'marquee': 'marquee 30s linear infinite',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #FAF9F6;
+            color: #1C1917;
+            overflow-x: hidden;
+        }
+
+        /* Subtle noise texture overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.02'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.4;
+        }
+
+        /* Scroll Reveal Animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+        }
+        .reveal-left.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(30px);
+            transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+        }
+        .reveal-right.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .stagger-1 { transition-delay: 100ms; }
+        .stagger-2 { transition-delay: 200ms; }
+        .stagger-3 { transition-delay: 300ms; }
+        .stagger-4 { transition-delay: 400ms; }
+        .stagger-5 { transition-delay: 500ms; }
+
+        /* Playful Hover - Float + Tilt + Orange Shadow */
+        .playful-hover {
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.5s ease;
+        }
+        .playful-hover:hover {
+            transform: translateY(-10px) rotate(-1.5deg);
+            box-shadow: 8px 20px 50px -10px rgba(224, 93, 54, 0.25);
+        }
+
+        /* Card hover */
+        .card-hover {
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease, border-color 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 60px -15px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Custom Selection */
+        ::selection {
+            background-color: #FFEDD5;
+            color: #E05D36;
+        }
+
+        /* Smooth scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FAF9F6;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #D6D3D1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #A8A29E;
+        }
+
+        /* Mobile menu */
+        .mobile-menu {
+            clip-path: circle(0% at calc(100% - 2.5rem) 2rem);
+            transition: clip-path 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .mobile-menu.open {
+            clip-path: circle(150% at calc(100% - 2.5rem) 2rem);
+        }
+
+        /* Animated underline */
+        .link-underline {
+            position: relative;
+        }
+        .link-underline::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -2px;
+            width: 0;
+            height: 2px;
+            background-color: #E05D36;
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+        .link-underline:hover::after {
+            width: 100%;
+        }
+
+        /* Hero name gradient shimmer */
+        @keyframes shimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+        .shimmer-text {
+            background: linear-gradient(90deg, #E05D36 0%, #FF8A65 25%, #E05D36 50%, #FF8A65 75%, #E05D36 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 5s ease-in-out infinite;
+        }
+
+        /* Marquee */
+        .marquee-track {
+            display: flex;
+            width: max-content;
+        }
+
+        /* Tag pill hover */
+        .tag-pill {
+            transition: all 0.3s ease;
+        }
+        .tag-pill:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+
+        /* Orange cursor glow */
+        .cursor-glow {
+            position: fixed;
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(224, 93, 54, 0.12) 0%, rgba(224, 93, 54, 0.04) 40%, transparent 70%);
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.3s ease;
+            will-change: left, top;
+        }
+
+        @media (max-width: 768px) {
+            .cursor-glow { display: none; }
+        }
+    </style>
+</head>
+<body class="antialiased font-sans">
+
+    <!-- Orange cursor glow light -->
+    <div id="cursorGlow" class="cursor-glow"></div>
+
+    <!-- ===================== NAVIGATION ===================== -->
+    <nav id="navbar" class="fixed w-full top-0 z-50 px-4 md:px-6 py-3 md:py-4 transition-all duration-500">
+        <div class="max-w-7xl mx-auto flex justify-between items-center bg-white/70 backdrop-blur-xl rounded-full px-6 py-3 border border-white/50 shadow-[0_2px_20px_rgba(0,0,0,0.04)]">
+            <!-- Logo -->
+            <a href="#" class="font-serif font-bold text-lg md:text-xl tracking-wide text-textDark hover:text-accent transition-colors duration-300 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-accent inline-block"></span>
+                Ibnu Abbas
+            </a>
+
+            <!-- Desktop Nav -->
+            <div class="hidden md:flex items-center gap-1">
+                <a href="#about" class="link-underline px-4 py-2 text-sm font-medium text-textMuted hover:text-accent transition-colors rounded-full hover:bg-accentPastel/50">About</a>
+                <a href="#why-is" class="link-underline px-4 py-2 text-sm font-medium text-textMuted hover:text-accent transition-colors rounded-full hover:bg-accentPastel/50">Why IS</a>
+                <a href="#skills" class="link-underline px-4 py-2 text-sm font-medium text-textMuted hover:text-accent transition-colors rounded-full hover:bg-accentPastel/50">Skills</a>
+                <a href="#projects" class="link-underline px-4 py-2 text-sm font-medium text-textMuted hover:text-accent transition-colors rounded-full hover:bg-accentPastel/50">Projects</a>
+                <a href="#contact" class="ml-2 px-5 py-2 text-sm font-medium bg-textDark text-white rounded-full hover:bg-accent transition-colors duration-300 shadow-sm">Let's Talk</a>
+            </div>
+
+            <!-- Mobile Burger -->
+            <button id="menuBtn" class="md:hidden relative w-10 h-10 flex items-center justify-center rounded-full hover:bg-accentPastel transition-colors" aria-label="Toggle menu">
+                <div class="burger-lines flex flex-col gap-1.5 w-5">
+                    <span class="block h-0.5 bg-textDark rounded-full transition-all duration-300 origin-center" id="line1"></span>
+                    <span class="block h-0.5 bg-textDark rounded-full transition-all duration-300" id="line2"></span>
+                    <span class="block h-0.5 bg-textDark rounded-full transition-all duration-300 origin-center w-3 ml-auto" id="line3"></span>
+                </div>
+            </button>
+        </div>
+
+        <!-- Mobile Menu Fullscreen -->
+        <div id="mobileMenu" class="mobile-menu fixed inset-0 bg-bgWarm/98 backdrop-blur-xl z-40 flex flex-col items-center justify-center gap-8">
+            <a href="#about" class="mobile-link text-3xl font-serif text-textDark hover:text-accent transition-colors">About</a>
+            <a href="#why-is" class="mobile-link text-3xl font-serif text-textDark hover:text-accent transition-colors">Why IS</a>
+            <a href="#skills" class="mobile-link text-3xl font-serif text-textDark hover:text-accent transition-colors">Skills</a>
+            <a href="#projects" class="mobile-link text-3xl font-serif text-textDark hover:text-accent transition-colors">Projects</a>
+            <a href="#contact" class="mobile-link mt-4 px-8 py-3 bg-accent text-white rounded-full text-lg font-medium hover:bg-accentDark transition-colors">Contact</a>
+        </div>
+    </nav>
+
+
+    <!-- ===================== HERO SECTION ===================== -->
+    <header class="min-h-screen flex flex-col justify-center items-center px-4 relative pt-24 pb-12 overflow-hidden">
+        <!-- Decorative background blobs -->
+        <div class="absolute top-20 left-10 w-72 h-72 bg-accentLight rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-float"></div>
+        <div class="absolute bottom-20 right-10 w-96 h-96 bg-pastelBlue rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-float-reverse"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-pastelPurple rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+
+        <div class="text-center reveal max-w-5xl mx-auto z-10">
+            <!-- Badge -->
+            <div class="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white border border-borderSoft text-textMuted text-xs font-semibold tracking-widest uppercase mb-10 shadow-sm">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                Information Systems Student · UNTAN
+            </div>
+
+            <!-- Main Heading - Editorial Style inspired by references -->
+            <h1 class="text-[2.75rem] md:text-7xl lg:text-[5.5rem] font-serif text-textDark leading-[1.08] tracking-tight mb-8">
+                meet<br>
+                <span class="shimmer-text italic font-semibold">Muhammad</span>
+                <span class="shimmer-text italic font-semibold">Ibnu Abbas</span>
+            </h1>
+
+            <!-- Subtitle -->
+            <p class="text-textMuted max-w-xl mx-auto text-lg md:text-xl font-light leading-relaxed">
+                Bridging the gap between human needs, digital aesthetics, and functional technology — with a touch of
+                <span class="inline-block font-medium text-accent relative">
+                    fun
+                    <svg class="absolute -bottom-1 left-0 w-full" viewBox="0 0 50 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 4.5C10 1 40 1 49 4.5" stroke="#E05D36" stroke-width="2" stroke-linecap="round" opacity="0.4"/></svg>
+                </span>.
+            </p>
+
+            <!-- Scroll Indicator -->
+            <div class="mt-16 flex flex-col items-center gap-2 text-textLight text-xs font-medium tracking-widest uppercase animate-bounce">
+                <span>Scroll</span>
+                <svg width="16" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3"/></svg>
+            </div>
+        </div>
+    </header>
+
+
+    <main>
+
+        <!-- ===================== VIDEO REEL SECTION ===================== -->
+        <section class="pb-28 px-4 md:px-6 max-w-6xl mx-auto reveal -mt-6">
+            <div class="w-full aspect-[16/9] md:aspect-[21/9] rounded-[2rem] md:rounded-[2.5rem] flex flex-col items-center justify-center overflow-hidden relative shadow-2xl shadow-black/10 group">
+                <!-- Autoplay Loop Muted Video -->
+                <video autoplay loop muted playsinline class="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700">
+                    <source src="motion-reel.mp4" type="video/mp4">
+                    <source src="https://cdn.jumpshare.com/download/S7EJzr9-0vI87xHaOW8iQIVYeW7PU7IFTsi9IWMIMJ3UjbQVFZMwCnOdbdPQ5P4HbIJXwh8lwLN25W44QRlnZab5RW6_a-qVqU5Z46JHJVg" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <!-- Gradient Overlay -->
+                <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+                <!-- Title Overlay with YouTube Link -->
+                <div class="absolute bottom-0 left-0 right-0 p-4 sm:p-6 md:p-10 flex items-end justify-between gap-4 z-10">
+                    <a href="https://www.youtube.com/@taewoo7730" target="_blank" rel="noopener noreferrer" class="group/channel inline-block text-left">
+                        <p class="text-white/70 text-[10px] sm:text-xs font-semibold tracking-widest uppercase mb-1 flex items-center gap-1.5 sm:gap-2">
+                            <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                            YouTube Channel
+                        </p>
+                        <h3 class="font-serif italic text-white text-base sm:text-xl md:text-3xl group-hover/channel:text-accentLight transition-colors flex items-center gap-1.5 sm:gap-2">
+                            Motion Graphic Reel by taewoo
+                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" class="opacity-75 group-hover/channel:opacity-100 group-hover/channel:translate-x-1 group-hover/channel:-translate-y-1 transition-all"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"/></svg>
+                        </h3>
+                    </a>
+                    <a href="https://www.youtube.com/@taewoo7730" target="_blank" rel="noopener noreferrer" class="shrink-0 w-10 h-10 sm:w-11 sm:h-11 md:w-14 md:h-14 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/25 hover:bg-red-600 hover:border-red-500 hover:scale-110 transition-all shadow-xl group/btn" title="Kunjungi channel @taewoo7730 di YouTube" aria-label="YouTube Channel @taewoo7730">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 fill-white" viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ===================== ABOUT / HELLO SECTION ===================== -->
+        <section id="about" class="py-20 md:py-28 px-4 md:px-6 max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-y-8 md:gap-y-4 md:gap-x-16 lg:gap-x-24 items-center">
+                
+                <!-- 1. Judul: Always Top on Mobile (order-1), Left Column Top Row on Desktop -->
+                <div class="reveal order-1 md:order-none md:col-start-1 md:row-start-1 self-auto md:self-end">
+                    <h2 class="text-4xl md:text-6xl lg:text-7xl font-serif text-textDark leading-[1.1]">
+                        Hello!!
+                    </h2>
+                </div>
+                
+                <!-- 2. Gambar: Middle on Mobile (order-2), Right Column Span 2 on Desktop -->
+                <div class="reveal stagger-2 order-2 md:order-none md:col-start-2 md:row-start-1 md:row-span-2 relative">
+                    <!-- Orange Glow - Pulsing -->
+                    <div class="absolute inset-4 bg-accent/25 blur-[60px] rounded-full -z-10 translate-x-4 translate-y-4 animate-pulse-glow"></div>
+                    <!-- Decorative pastel circle -->
+                    <div class="absolute -top-4 -right-4 w-20 h-20 bg-pastelBlue rounded-full -z-10 animate-float opacity-60"></div>
+                    <div class="absolute -bottom-3 -left-3 w-14 h-14 bg-accentLight rounded-full -z-10 animate-float-reverse opacity-70"></div>
+
+                    <div class="w-full aspect-[4/5] rounded-[2rem] md:rounded-[2.5rem] bg-white shadow-xl p-2.5 md:p-3 border border-white playful-hover">
+                        <img src="ibnu-profile.jpg" alt="Muhammad Ibnu Abbas" class="w-full h-full object-cover object-top rounded-[1.5rem] md:rounded-[2rem]" loading="lazy">
+                    </div>
+                </div>
+
+                <!-- 3. Isi Teks: Bottom on Mobile (order-3), Left Column Bottom Row on Desktop -->
+                <div class="reveal stagger-3 order-3 md:order-none md:col-start-1 md:row-start-2 self-auto md:self-start">
+                    <div class="space-y-5 text-textMuted text-base md:text-lg font-light leading-relaxed pt-2 md:pt-4">
+                        <p>
+                            Perkenalkan, saya <strong class="text-textDark font-medium">Muhammad Ibnu Abbas</strong>. Saat ini saya adalah seorang mahasiswa program studi <strong class="text-accent font-medium">Sistem Informasi</strong> di <strong class="text-accent font-medium">Universitas Tanjungpura (UNTAN)</strong>.
+                        </p>
+                        <p>
+                            Ketertarikan saya berpusat pada bagaimana mengolah informasi menjadi sebuah produk digital yang tidak hanya fungsional secara sistem, tetapi juga memiliki nilai estetika dan kemudahan interaksi bagi penggunanya.
+                        </p>
+                    </div>
+                    <!-- Fun stats -->
+                    <div class="mt-8 flex gap-6 md:gap-8">
+                        <div>
+                            <p class="text-2xl md:text-3xl font-serif font-bold text-textDark">SI</p>
+                            <p class="text-xs md:text-sm text-textMuted mt-1">Major</p>
+                        </div>
+                        <div class="w-px bg-borderSoft"></div>
+                        <div>
+                            <p class="text-2xl md:text-3xl font-serif font-bold text-textDark">UNTAN</p>
+                            <p class="text-xs md:text-sm text-textMuted mt-1">University</p>
+                        </div>
+                        <div class="w-px bg-borderSoft"></div>
+                        <div>
+                            <p class="text-2xl md:text-3xl font-serif font-bold text-accent">∞</p>
+                            <p class="text-xs md:text-sm text-textMuted mt-1">Curiosity</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ===================== WHY INFORMATION SYSTEMS ===================== -->
+        <section id="why-is" class="py-20 md:py-28 px-4 md:px-6 max-w-6xl mx-auto">
+            <div class="bg-white rounded-[2rem] md:rounded-[2.5rem] border border-borderSoft shadow-xl shadow-black/[0.03] relative overflow-hidden">
+                <!-- Decorative pastel blobs inside -->
+                <div class="absolute top-0 right-0 w-80 h-80 bg-accentLight rounded-full mix-blend-multiply filter blur-[80px] opacity-40 -z-0 translate-x-1/3 -translate-y-1/3"></div>
+                <div class="absolute bottom-0 left-0 w-64 h-64 bg-pastelBlue rounded-full mix-blend-multiply filter blur-[80px] opacity-30 -z-0 -translate-x-1/3 translate-y-1/3"></div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-y-8 md:gap-y-4 md:gap-x-16 lg:gap-x-24 items-center p-6 md:p-12 lg:p-16 relative z-10">
+                    
+                    <!-- 1. Judul: Top on Mobile (order-1), Right Column Top Row on Desktop (ZIGZAG) -->
+                    <div class="reveal order-1 md:order-none md:col-start-2 md:row-start-1 self-auto md:self-end">
+                        <h2 class="text-4xl md:text-5xl lg:text-6xl font-serif text-textDark leading-[1.1]">
+                            Why<br>
+                            <span class="italic text-accent">Information</span><br class="hidden md:block">
+                            <span class="italic text-accent">Systems?</span>
+                        </h2>
+                    </div>
+                    
+                    <!-- 2. Gambar: Middle on Mobile (order-2), Left Column Span 2 on Desktop (ZIGZAG) -->
+                    <div class="reveal stagger-2 order-2 md:order-none md:col-start-1 md:row-start-1 md:row-span-2 relative">
+                        <!-- Orange Glow - Pulsing -->
+                        <div class="absolute inset-4 bg-accent/20 blur-[60px] rounded-full -z-10 -translate-x-4 translate-y-4 animate-pulse-glow"></div>
+                        <!-- Decorative circles -->
+                        <div class="absolute -top-3 -left-3 w-16 h-16 bg-pastelGreen rounded-full -z-10 animate-float opacity-60"></div>
+                        <div class="absolute -bottom-4 -right-4 w-12 h-12 bg-pastelPurple rounded-full -z-10 animate-float-reverse opacity-50"></div>
+                        
+                        <div class="w-full aspect-[4/3] rounded-[2rem] md:rounded-[2.5rem] overflow-hidden shadow-lg border-4 border-white playful-hover">
+                            <img src="sistem-informasi-class.jpg" alt="Mahasiswa Sistem Informasi UNTAN" class="w-full h-full object-cover object-center" loading="lazy">
+                        </div>
+                    </div>
+
+                    <!-- 3. Isi Teks: Bottom on Mobile (order-3), Right Column Bottom Row on Desktop -->
+                    <div class="reveal stagger-3 order-3 md:order-none md:col-start-2 md:row-start-2 self-auto md:self-start">
+                        <div class="space-y-5 text-textMuted text-base md:text-lg font-light leading-relaxed pt-2 md:pt-4">
+                            <p>
+                                Sistem Informasi adalah <strong class="text-textDark font-medium">titik temu yang harmonis</strong> antara teknologi dan kebutuhan bisnis. Ini bukan sekadar tentang seberapa canggih baris kode yang ditulis, melainkan seberapa tepat solusi tersebut memecahkan masalah.
+                            </p>
+                            <p>
+                                Melalui disiplin ilmu ini, saya belajar merancang arsitektur data, menganalisis alur kerja pengguna, dan meracik teknologi menjadi <strong class="text-accent font-medium">alat yang memberdayakan manusia</strong> di baliknya.
+                            </p>
+                        </div>
+                        <!-- Key values -->
+                        <div class="mt-8 flex flex-wrap gap-3">
+                            <span class="px-4 py-2 rounded-full bg-accentPastel text-accent text-sm font-medium border border-accent/10">Problem Solving</span>
+                            <span class="px-4 py-2 rounded-full bg-pastelBlue text-blue-600 text-sm font-medium border border-blue-100">Data Architecture</span>
+                            <span class="px-4 py-2 rounded-full bg-pastelGreen text-emerald-600 text-sm font-medium border border-emerald-100">User Empowerment</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ===================== TECH STACK & TOOLS ===================== -->
+        <section id="skills" class="py-20 md:py-28 px-4 md:px-6 max-w-6xl mx-auto">
+            <div class="text-center mb-16 md:mb-20 reveal">
+                <p class="text-accent text-sm font-semibold tracking-widest uppercase mb-4 flex items-center justify-center gap-2">
+                    <span class="w-8 h-px bg-accent inline-block"></span> What I Use <span class="w-8 h-px bg-accent inline-block"></span>
+                </p>
+                <h2 class="text-4xl md:text-5xl lg:text-6xl font-serif mb-5 text-textDark">Tech Stack & Tools</h2>
+                <p class="text-textMuted text-lg font-light max-w-2xl mx-auto">Perangkat dan teknologi yang menemani proses kreatif saya setiap harinya.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+                <!-- Stack 1: Programming -->
+                <div class="reveal stagger-1 bg-white p-8 md:p-9 rounded-[2rem] border border-borderSoft shadow-sm card-hover group relative overflow-hidden">
+                    <!-- Hover gradient -->
+                    <div class="absolute inset-0 bg-gradient-to-br from-accentPastel/0 to-accentLight/0 group-hover:from-accentPastel/50 group-hover:to-accentLight/30 transition-all duration-500 rounded-[2rem]"></div>
+                    
+                    <div class="relative z-10">
+                        <div class="w-14 h-14 rounded-2xl bg-accentLight text-accent flex items-center justify-center mb-8 group-hover:rotate-12 group-hover:scale-110 transition-transform duration-500 shadow-sm">
+                            <svg width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5"></path></svg>
+                        </div>
+                        <h3 class="text-2xl font-serif mb-2 text-textDark">Programming</h3>
+                        <p class="text-textLight text-sm mb-7">Languages & frameworks</p>
+                        <ul class="space-y-4 text-textMuted font-medium text-sm lg:text-base">
+                            <li class="flex items-center gap-3 group/item">
+                                <span class="w-2.5 h-2.5 rounded-full bg-accent/40 group-hover/item:bg-accent group-hover/item:scale-125 transition-all"></span>
+                                <span class="group-hover/item:translate-x-1 transition-transform">Python</span>
+                            </li>
+                            <li class="flex items-center gap-3 group/item">
+                                <span class="w-2.5 h-2.5 rounded-full bg-accent/40 group-hover/item:bg-accent group-hover/item:scale-125 transition-all"></span>
+                                <span class="group-hover/item:translate-x-1 transition-transform">Lua</span>
+                            </li>
+                            <li class="flex items-center gap-3 group/item">
+                                <span class="w-2.5 h-2.5 rounded-full bg-accent/40 group-hover/item:bg-accent group-hover/item:scale-125 transition-all"></span>
+                                <span class="group-hover/item:translate-x-1 transition-transform">CSS</span>
+                            </li>
+                            <li class="flex items-center gap-3 group/item">
+                                <span class="w-2.5 h-2.5 rounded-full bg-accent/40 group-hover/item:bg-accent group-hover/item:scale-125 transition-all"></span>
+                                <span class="group-hover/item:translate-x-1 transition-transform">HTML</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Stack 2: Design & 3D -->
+                <div class="reveal stagger-2 bg-white p-8 md:p-9 rounded-[2rem] border border-borderSoft shadow-sm card-hover group relative overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-br from-blue-50/0 to-pastelBlue/0 group-hover:from-blue-50/50 group-hover:to-pastelBlue/30 transition-all duration-500 rounded-[2rem]"></div>
+
+                    <div class="relative z-10">
+                        <div class="w-14 h-14 rounded-2xl bg-blue-50 text-blue-500 flex items-center justify-center mb-8 group-hover:rotate-12 group-hover:scale-110 transition-transform duration-500 shadow-sm">
+                            <svg width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.53 16.122a3 3 0 00-5.78.782c0 1.664 1.343 3.013 3 3.013 1.5 0 2.76-1.106 2.965-2.553M14.47 16.122a3 3 0 015.78.782c0 1.664-1.343 3.013-3 3.013-1.5 0-2.76-1.106-2.965-2.553M12 2.25v4.5m0-4.5a3 3 0 013 3v4.5M12 2.25a3 3 0 00-3 3v4.5m6 0v3a3 3 0 01-6 0v-3m6 0a3 3 0 013 3v.75m-12-3.75v3a3 3 0 006 0v-3"></path></svg>
+                        </div>
+                        <h3 class="text-2xl font-serif mb-2 text-textDark">Design & 3D</h3>
+                        <p class="text-textLight text-sm mb-7">Visual, prototype & modeling</p>
+                        <ul class="space-y-4 text-textMuted font-medium text-sm lg:text-base">
+                            <li class="flex items-center gap-3 group/item">
+                                <span class="w-2.5 h-2.5 rounded-full bg-blue-300/60 group-hover/item:bg-blue-500 group-hover/item:scale-125 transition-all"></span>
+                                <span class="group-hover/item:translate-x-1 transition-transform">Figma</span>
+                            </li>
+                            <li class="flex items-center gap-3 group/item">
+                                <span class="w-2.5 h-2.5 rounded-full bg-blue-300/60 group-hover/item:bg-blue-500 group-hover/item:scale-125 transition-all"></span>
+                                <span class="group-hover/item:translate-x-1 transition-transform">Blender</span>
+                            </li>
+                            <li class="flex items-center gap-3 group/item">
+                                <span class="w-2.5 h-2.5 rounded-full bg-blue-300/60 group-hover/item:bg-blue-500 group-hover/item:scale-125 transition-all"></span>
+                                <span class="group-hover/item:translate-x-1 transition-transform">draw.io</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Stack 3: AI -->
+                <div class="reveal stagger-3 bg-white p-8 md:p-9 rounded-[2rem] border border-borderSoft shadow-sm card-hover group relative overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-br from-emerald-50/0 to-pastelGreen/0 group-hover:from-emerald-50/50 group-hover:to-pastelGreen/30 transition-all duration-500 rounded-[2rem]"></div>
+
+                    <div class="relative z-10">
+                        <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-500 flex items-center justify-center mb-8 group-hover:rotate-12 group-hover:scale-110 transition-transform duration-500 shadow-sm">
+                            <svg width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z"></path></svg>
+                        </div>
+                        <h3 class="text-2xl font-serif mb-2 text-textDark">AI</h3>
+                        <p class="text-textLight text-sm mb-7">AI engineering & workflow</p>
+                        <ul class="space-y-4 text-textMuted font-medium text-sm lg:text-base">
+                            <li class="flex items-center gap-3 group/item">
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-300/60 group-hover/item:bg-emerald-500 group-hover/item:scale-125 transition-all"></span>
+                                <span class="group-hover/item:translate-x-1 transition-transform">AI Engineer</span>
+                            </li>
+                            <li class="flex items-center gap-3 group/item">
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-300/60 group-hover/item:bg-emerald-500 group-hover/item:scale-125 transition-all"></span>
+                                <span class="group-hover/item:translate-x-1 transition-transform">AI Lokal</span>
+                            </li>
+                            <li class="flex items-center gap-3 group/item">
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-300/60 group-hover/item:bg-emerald-500 group-hover/item:scale-125 transition-all"></span>
+                                <span class="group-hover/item:translate-x-1 transition-transform">AI Generatif</span>
+                            </li>
+                            <li class="flex items-center gap-3 group/item">
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-300/60 group-hover/item:bg-emerald-500 group-hover/item:scale-125 transition-all"></span>
+                                <span class="group-hover/item:translate-x-1 transition-transform">AI Workflow</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ===================== MARQUEE DIVIDER ===================== -->
+        <div class="py-8 overflow-hidden border-y border-borderSoft/50 bg-white/50">
+            <div class="marquee-track animate-marquee">
+                <span class="flex items-center gap-8 px-4 text-textLight/40 text-lg md:text-xl font-serif italic whitespace-nowrap select-none">
+                    <span>✦ UI/UX Design</span>
+                    <span>✦ Information Systems</span>
+                    <span>✦ Local AI</span>
+                    <span>✦ Motion Graphics</span>
+                    <span>✦ Python</span>
+                    <span>✦ Audio Engineering</span>
+                    <span>✦ Generative AI</span>
+                    <span>✦ Figma</span>
+                    <span>✦ Blender 3D</span>
+                    <span>✦ Data Architecture</span>
+                    <span>✦ UI/UX Design</span>
+                    <span>✦ Information Systems</span>
+                    <span>✦ Local AI</span>
+                    <span>✦ Motion Graphics</span>
+                    <span>✦ Python</span>
+                    <span>✦ Audio Engineering</span>
+                    <span>✦ Generative AI</span>
+                    <span>✦ Figma</span>
+                    <span>✦ Blender 3D</span>
+                    <span>✦ Data Architecture</span>
+                </span>
+            </div>
+        </div>
+
+
+        <!-- ===================== SELECTED PROJECTS ===================== -->
+        <section id="projects" class="py-20 md:py-28 px-4 md:px-6 max-w-7xl mx-auto">
+            <div class="mb-16 md:mb-24 reveal">
+                <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 border-t border-borderSoft pt-12 md:pt-16">
+                    <div>
+                        <p class="text-accent text-sm font-semibold tracking-widest uppercase mb-4 flex items-center gap-2">
+                            <span class="w-8 h-px bg-accent inline-block"></span> Portfolio
+                        </p>
+                        <h2 class="text-4xl md:text-6xl lg:text-7xl font-serif text-textDark">
+                            Selected<br>Projects
+                        </h2>
+                    </div>
+                    <p class="text-textMuted text-lg font-light max-w-sm">Beberapa karya dan studi kasus terpilih yang menunjukkan kemampuan saya.</p>
+                </div>
+            </div>
+
+            <div class="space-y-24 md:space-y-36">
+                
+                <!-- ===== Project 1: UI/UX Evaluation (Desktop: Image Left, Text Right) ===== -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-y-6 lg:gap-y-4 lg:gap-x-12 items-center">
+                    <!-- 1. Judul: Top on Mobile (order-1), Top Right on Desktop -->
+                    <div class="reveal order-1 lg:order-none lg:col-start-8 lg:col-span-5 lg:row-start-1 self-auto lg:self-end lg:pl-4">
+                        <span class="inline-flex items-center gap-2 px-4 py-1.5 bg-accentPastel text-accent text-xs font-bold tracking-wider uppercase rounded-full mb-4 border border-accent/10">
+                            <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
+                            Design & Analysis
+                        </span>
+                        <h3 class="text-3xl md:text-4xl font-serif text-textDark leading-tight">UI/UX Evaluation Video</h3>
+                    </div>
+                    
+                    <!-- 2. Gambar: Middle on Mobile (order-2), Span Left on Desktop -->
+                    <div class="reveal stagger-2 order-2 lg:order-none lg:col-start-1 lg:col-span-7 lg:row-start-1 lg:row-span-2">
+                        <div class="rounded-[2rem] overflow-hidden aspect-[4/3] bg-white shadow-xl p-2 md:p-3 border border-white playful-hover group">
+                            <img src="https://images.unsplash.com/photo-1618761714954-0b8cd0026356?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="UI UX Evaluation" class="w-full h-full object-cover rounded-[1.5rem] group-hover:saturate-[1.1] transition-all duration-500" loading="lazy">
+                        </div>
+                    </div>
+
+                    <!-- 3. Isi Teks: Bottom on Mobile (order-3), Bottom Right on Desktop -->
+                    <div class="reveal stagger-3 order-3 lg:order-none lg:col-start-8 lg:col-span-5 lg:row-start-2 self-auto lg:self-start lg:pl-4">
+                        <p class="text-textMuted font-light text-base md:text-lg leading-relaxed mt-2 lg:mt-4">
+                            Proyek visual yang menggabungkan analisis antarmuka dengan <em class="text-textDark not-italic font-medium">kinetic typography</em>. Membedah interaksi pengguna dan mengevaluasi journey flow untuk menemukan ruang perbaikan desain.
+                        </p>
+                        <div class="pt-6 flex gap-2.5 flex-wrap">
+                            <span class="tag-pill px-4 py-2 rounded-full bg-white border border-borderSoft text-sm font-medium text-textMuted shadow-sm">Figma</span>
+                            <span class="tag-pill px-4 py-2 rounded-full bg-white border border-borderSoft text-sm font-medium text-textMuted shadow-sm">Motion Graphics</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== Project 2: Programming (Desktop: Text Left, Image Right - ZIGZAG) ===== -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-y-6 lg:gap-y-4 lg:gap-x-12 items-center">
+                    <!-- 1. Judul: Top on Mobile (order-1), Top Left on Desktop -->
+                    <div class="reveal order-1 lg:order-none lg:col-start-1 lg:col-span-5 lg:row-start-1 self-auto lg:self-end lg:pr-4">
+                        <span class="inline-flex items-center gap-2 px-4 py-1.5 bg-blue-50 text-blue-600 text-xs font-bold tracking-wider uppercase rounded-full mb-4 border border-blue-100">
+                            <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                            Development
+                        </span>
+                        <h3 class="text-3xl md:text-4xl font-serif text-textDark leading-tight">Programming</h3>
+                    </div>
+                    
+                    <!-- 2. Gambar: Middle on Mobile (order-2), Span Right on Desktop -->
+                    <div class="reveal stagger-2 order-2 lg:order-none lg:col-start-6 lg:col-span-7 lg:row-start-1 lg:row-span-2">
+                        <div class="rounded-[2rem] overflow-hidden aspect-[4/3] bg-white shadow-xl p-2 md:p-3 border border-white playful-hover group">
+                            <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Code Script" class="w-full h-full object-cover rounded-[1.5rem] group-hover:saturate-[1.1] transition-all duration-500" loading="lazy">
+                        </div>
+                    </div>
+
+                    <!-- 3. Isi Teks: Bottom on Mobile (order-3), Bottom Left on Desktop -->
+                    <div class="reveal stagger-3 order-3 lg:order-none lg:col-start-1 lg:col-span-5 lg:row-start-2 self-auto lg:self-start lg:pr-4">
+                        <p class="text-textMuted font-light text-base md:text-lg leading-relaxed mt-2 lg:mt-4">
+                            Pengembangan solusi pemrograman fungsional dan antarmuka interaktif menggunakan <em class="text-textDark not-italic font-medium">Python, Lua, CSS, dan HTML</em>. Berfokus pada penulisan struktur kode yang teratur, modular, dan efisien.
+                        </p>
+                        <div class="pt-6 flex gap-2.5 flex-wrap">
+                            <span class="tag-pill px-4 py-2 rounded-full bg-white border border-borderSoft text-sm font-medium text-textMuted shadow-sm">Python</span>
+                            <span class="tag-pill px-4 py-2 rounded-full bg-white border border-borderSoft text-sm font-medium text-textMuted shadow-sm">Lua</span>
+                            <span class="tag-pill px-4 py-2 rounded-full bg-white border border-borderSoft text-sm font-medium text-textMuted shadow-sm">CSS</span>
+                            <span class="tag-pill px-4 py-2 rounded-full bg-white border border-borderSoft text-sm font-medium text-textMuted shadow-sm">HTML</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== Project 3: AI (Desktop: Image Left, Text Right) ===== -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-y-6 lg:gap-y-4 lg:gap-x-12 items-center">
+                    <!-- 1. Judul: Top on Mobile (order-1), Top Right on Desktop -->
+                    <div class="reveal order-1 lg:order-none lg:col-start-8 lg:col-span-5 lg:row-start-1 self-auto lg:self-end lg:pl-4">
+                        <span class="inline-flex items-center gap-2 px-4 py-1.5 bg-emerald-50 text-emerald-600 text-xs font-bold tracking-wider uppercase rounded-full mb-4 border border-emerald-100">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                            Artificial Intelligence
+                        </span>
+                        <h3 class="text-3xl md:text-4xl font-serif text-textDark leading-tight">AI</h3>
+                    </div>
+                    
+                    <!-- 2. Gambar: Middle on Mobile (order-2), Span Left on Desktop -->
+                    <div class="reveal stagger-2 order-2 lg:order-none lg:col-start-1 lg:col-span-7 lg:row-start-1 lg:row-span-2">
+                        <div class="rounded-[2rem] overflow-hidden aspect-[4/3] bg-white shadow-xl p-2 md:p-3 border border-white playful-hover group">
+                            <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="AI Workspace" class="w-full h-full object-cover rounded-[1.5rem] group-hover:saturate-[1.1] transition-all duration-500" loading="lazy">
+                        </div>
+                    </div>
+
+                    <!-- 3. Isi Teks: Bottom on Mobile (order-3), Bottom Right on Desktop -->
+                    <div class="reveal stagger-3 order-3 lg:order-none lg:col-start-8 lg:col-span-5 lg:row-start-2 self-auto lg:self-start lg:pl-4">
+                        <p class="text-textMuted font-light text-base md:text-lg leading-relaxed mt-2 lg:mt-4">
+                            Implementasi dan eksplorasi solusi kecerdasan buatan, meliputi peran <em class="text-textDark not-italic font-medium">AI Engineer</em>, penerapan model <em class="text-textDark not-italic font-medium">AI Lokal</em>, pemanfaatan alat <em class="text-textDark not-italic font-medium">AI Generatif</em>, hingga orkestrasi otomasi <em class="text-textDark not-italic font-medium">AI Workflow</em>.
+                        </p>
+                        <div class="pt-6 flex gap-2.5 flex-wrap">
+                            <span class="tag-pill px-4 py-2 rounded-full bg-white border border-borderSoft text-sm font-medium text-textMuted shadow-sm">AI Engineer</span>
+                            <span class="tag-pill px-4 py-2 rounded-full bg-white border border-borderSoft text-sm font-medium text-textMuted shadow-sm">AI Lokal</span>
+                            <span class="tag-pill px-4 py-2 rounded-full bg-white border border-borderSoft text-sm font-medium text-textMuted shadow-sm">AI Generatif</span>
+                            <span class="tag-pill px-4 py-2 rounded-full bg-white border border-borderSoft text-sm font-medium text-textMuted shadow-sm">AI Workflow</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ===================== EXPERIENCE ===================== -->
+        <section class="py-20 md:py-28 px-4 md:px-6 max-w-5xl mx-auto">
+            <div class="text-center reveal">
+                <p class="text-accent text-sm font-semibold tracking-widest uppercase mb-6 flex items-center justify-center gap-2">
+                    <span class="w-8 h-px bg-accent inline-block"></span> Experience <span class="w-8 h-px bg-accent inline-block"></span>
+                </p>
+
+                <!-- Experience Card -->
+                <div class="mt-4 p-8 md:p-14 lg:p-16 rounded-[2rem] md:rounded-[2.5rem] bg-gradient-to-br from-accentPastel via-white to-[#fff0e5] border border-orange-100/80 shadow-2xl shadow-accent/[0.06] relative overflow-hidden group hover:scale-[1.01] transition-transform duration-700">
+                    <!-- Decorative blob -->
+                    <svg class="absolute -top-16 -right-16 w-72 h-72 text-accent opacity-[0.04] group-hover:rotate-12 transition-transform duration-1000" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                        <path fill="currentColor" d="M44.7,-76.4C58.3,-69.2,70.2,-57.5,79.6,-43.5C89,-29.5,95.9,-13.2,93.6,2.1C91.3,17.4,79.9,31.7,68.9,44.8C57.9,57.9,47.4,69.8,33.6,76.5C19.8,83.2,2.7,84.7,-12.9,80.7C-28.5,76.7,-42.6,67.2,-55.8,55.5C-69,43.8,-81.3,29.9,-86.1,13.6C-90.9,-2.7,-88.2,-21.4,-78.9,-36.4C-69.6,-51.4,-53.7,-62.7,-38.7,-69.4C-23.7,-76.1,-9.6,-78.2,3.3,-83C16.2,-87.8,31.1,-83.6,44.7,-76.4Z" transform="translate(100 100)" />
+                    </svg>
+                    <!-- Second blob -->
+                    <svg class="absolute -bottom-20 -left-20 w-60 h-60 text-blue-400 opacity-[0.03] group-hover:-rotate-6 transition-transform duration-1000" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                        <path fill="currentColor" d="M39.4,-67.4C51.3,-60,61.6,-50.3,69.9,-38.5C78.2,-26.6,84.5,-13.3,85.5,0.6C86.5,14.5,82.2,28.9,73.8,40.6C65.5,52.3,53.1,61.2,39.9,67.3C26.6,73.3,12.5,76.5,-1.3,78.8C-15.1,81.1,-30.2,82.5,-42.5,77C-54.8,71.4,-64.3,58.9,-71.4,45.3C-78.6,31.7,-83.4,16.9,-83.2,0.1C-83,-16.6,-77.7,-33.2,-68.1,-45.8C-58.4,-58.4,-44.3,-67,-30.6,-73.1C-16.9,-79.3,-3.5,-83,6.6,-83.9C16.6,-84.8,27.5,-74.9,39.4,-67.4Z" transform="translate(100 100)" />
+                    </svg>
+
+                    <div class="relative z-10">
+                        <!-- Year badge -->
+                        <div class="inline-flex items-center gap-2 px-5 py-2 bg-white/80 backdrop-blur-sm rounded-full border border-accent/10 shadow-sm mb-8">
+                            <span class="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
+                            <span class="text-sm font-semibold text-accent tracking-wide">2026</span>
+                        </div>
+                        
+                        <h3 class="text-4xl md:text-5xl lg:text-6xl font-serif text-textDark mb-4">PARTISI 2026</h3>
+                        <p class="text-xl md:text-2xl text-textMuted font-light mb-8">
+                            Bagian dari <span class="text-accent font-medium italic font-serif">Tim VIDYADHIPATI</span> dan <span class="text-accent font-medium italic font-serif">KITSUNE</span>
+                        </p>
+                        <div class="w-16 h-px bg-accent/30 mx-auto mb-8"></div>
+                        <p class="text-textMuted font-light text-base md:text-lg leading-relaxed max-w-2xl mx-auto">
+                            Berpartisipasi aktif dalam kegiatan/kompetisi akademik, melatih kemampuan kolaborasi, pemecahan masalah secara tim, dan penerapan langsung materi Sistem Informasi dengan suasana yang interaktif.
+                        </p>
+                        <!-- Participation tags -->
+                        <div class="mt-8 flex flex-wrap justify-center gap-3">
+                            <span class="px-4 py-2 rounded-full bg-white/80 backdrop-blur-sm text-textMuted text-sm font-medium border border-borderSoft/50 shadow-sm">Academic Competition</span>
+                            <span class="px-4 py-2 rounded-full bg-white/80 backdrop-blur-sm text-textMuted text-sm font-medium border border-borderSoft/50 shadow-sm">Team Collaboration</span>
+                            <span class="px-4 py-2 rounded-full bg-white/80 backdrop-blur-sm text-textMuted text-sm font-medium border border-borderSoft/50 shadow-sm">Problem Solving</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+
+    <!-- ===================== FOOTER ===================== -->
+    <footer id="contact" class="relative mt-12">
+        <!-- Curved top edge -->
+        <div class="bg-white rounded-t-[2.5rem] md:rounded-t-[3.5rem] border-t border-borderSoft shadow-[0_-10px_60px_rgba(0,0,0,0.03)] pt-24 md:pt-32 pb-8 md:pb-12 px-4 md:px-6 relative overflow-hidden">
+            <!-- Decorative gradient blobs -->
+            <div class="absolute top-0 left-1/4 w-96 h-96 bg-accentLight rounded-full filter blur-[100px] opacity-30 -z-0"></div>
+            <div class="absolute bottom-0 right-1/4 w-72 h-72 bg-pastelBlue rounded-full filter blur-[100px] opacity-20 -z-0"></div>
+
+            <div class="max-w-6xl mx-auto relative z-10">
+                <!-- Giant CTA -->
+                <div class="text-center mb-16 md:mb-20 reveal">
+                    <p class="text-accent text-sm font-semibold tracking-widest uppercase mb-6">Ready to collaborate?</p>
+                    <h2 class="text-5xl md:text-7xl lg:text-[6rem] xl:text-[7rem] font-serif text-textDark leading-[1.05] mb-8">
+                        Let's <span class="italic text-accent">Connect</span>
+                    </h2>
+                    <p class="text-textMuted text-lg md:text-xl font-light max-w-xl mx-auto mb-12 leading-relaxed">
+                        Tertarik untuk berkolaborasi atau sekadar berdiskusi tentang teknologi, desain, dan ide-ide seru lainnya? Jangan ragu untuk menyapa!
+                    </p>
+                    
+                    <!-- CTA Buttons -->
+                    <div class="flex flex-col sm:flex-row justify-center gap-4 sm:gap-5">
+                        <a href="mailto:hello@example.com" class="group inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-accent text-white font-medium text-lg hover:bg-accentDark hover:shadow-xl hover:shadow-accent/20 hover:-translate-y-1 transition-all duration-300">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"></path></svg>
+                            Kirim Email
+                            <span class="group-hover:translate-x-1 transition-transform">→</span>
+                        </a>
+                        <a href="#" class="group inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-white border-2 border-borderSoft text-textDark font-medium text-lg hover:border-textDark hover:-translate-y-1 transition-all duration-300 shadow-sm">
+                            <!-- LinkedIn icon -->
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                            LinkedIn
+                            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" class="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Bottom bar -->
+                <div class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-borderSoft/60 gap-6">
+                    <div class="flex items-center gap-3">
+                        <span class="w-2 h-2 rounded-full bg-accent"></span>
+                        <p class="text-textMuted text-sm font-medium">© 2026 Muhammad Ibnu Abbas. Designed with passion.</p>
+                    </div>
+                    <div class="flex items-center gap-6">
+                        <a href="#" class="text-textMuted text-sm font-medium hover:text-accent transition-colors link-underline">Instagram</a>
+                        <a href="#" class="text-textMuted text-sm font-medium hover:text-accent transition-colors link-underline">GitHub</a>
+                        <a href="#" class="text-textMuted text-sm font-medium hover:text-accent transition-colors link-underline">Twitter</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- ===================== JAVASCRIPT ===================== -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+
+            // === 1. IntersectionObserver for Scroll Reveal ===
+            const revealElements = document.querySelectorAll(".reveal, .reveal-left, .reveal-right");
+            
+            const observerOptions = {
+                root: null,
+                rootMargin: "0px 0px -60px 0px",
+                threshold: 0.1
+            };
+
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("active");
+                    }
+                });
+            }, observerOptions);
+
+            revealElements.forEach(el => revealObserver.observe(el));
+
+
+            // === 2. Mobile Menu Toggle ===
+            const menuBtn = document.getElementById("menuBtn");
+            const mobileMenu = document.getElementById("mobileMenu");
+            const mobileLinks = document.querySelectorAll(".mobile-link");
+            const line1 = document.getElementById("line1");
+            const line2 = document.getElementById("line2");
+            const line3 = document.getElementById("line3");
+            let menuOpen = false;
+
+            function toggleMenu() {
+                menuOpen = !menuOpen;
+                mobileMenu.classList.toggle("open", menuOpen);
+                
+                if (menuOpen) {
+                    line1.style.transform = "rotate(45deg) translateY(4px)";
+                    line2.style.opacity = "0";
+                    line3.style.transform = "rotate(-45deg) translateY(-4px)";
+                    line3.style.width = "100%";
+                    document.body.style.overflow = "hidden";
+                } else {
+                    line1.style.transform = "";
+                    line2.style.opacity = "";
+                    line3.style.transform = "";
+                    line3.style.width = "";
+                    document.body.style.overflow = "";
+                }
+            }
+
+            menuBtn.addEventListener("click", toggleMenu);
+            mobileLinks.forEach(link => {
+                link.addEventListener("click", () => {
+                    if (menuOpen) toggleMenu();
+                });
+            });
+
+
+            // === 3. Navbar scroll effect ===
+            const navbar = document.getElementById("navbar");
+            let lastScroll = 0;
+
+            window.addEventListener("scroll", () => {
+                const currentScroll = window.scrollY;
+                
+                if (currentScroll > 100) {
+                    navbar.classList.add("py-2");
+                    navbar.classList.remove("py-3", "md:py-4");
+                } else {
+                    navbar.classList.remove("py-2");
+                    navbar.classList.add("py-3", "md:py-4");
+                }
+                
+                lastScroll = currentScroll;
+            }, { passive: true });
+
+
+            // === 4. Smooth scroll for anchor links ===
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener("click", function(e) {
+                    const href = this.getAttribute("href");
+                    if (href === "#") return;
+                    
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        const offsetTop = target.getBoundingClientRect().top + window.scrollY - 80;
+                        window.scrollTo({ top: offsetTop, behavior: "smooth" });
+                    }
+                });
+            });
+
+
+            // === 5. Orange cursor glow following mouse ===
+            const cursorGlow = document.getElementById("cursorGlow");
+            let mouseX = 0, mouseY = 0;
+            let glowX = 0, glowY = 0;
+
+            document.addEventListener("mousemove", (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            });
+
+            // Smooth follow with requestAnimationFrame
+            function animateGlow() {
+                glowX += (mouseX - glowX) * 0.15;
+                glowY += (mouseY - glowY) * 0.15;
+                cursorGlow.style.left = glowX + "px";
+                cursorGlow.style.top = glowY + "px";
+                requestAnimationFrame(animateGlow);
+            }
+            animateGlow();
+
+            // Show/hide on enter/leave
+            document.addEventListener("mouseenter", () => { cursorGlow.style.opacity = "1"; });
+            document.addEventListener("mouseleave", () => { cursorGlow.style.opacity = "0"; });
+
+        });
+    </script>
+</body>
+</html>
