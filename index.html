@@ -253,6 +253,16 @@
         @media (max-width: 768px) {
             .cursor-glow { display: none; }
         }
+
+        /* Dynamic Island animation */
+        @keyframes islandPop {
+            0% { transform: scale(0.92); opacity: 0; }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .island-pop {
+            animation: islandPop 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
     </style>
 </head>
 <body class="antialiased font-sans">
@@ -795,13 +805,51 @@
                     </p>
                     
                     <!-- CTA Buttons -->
-                    <div class="flex flex-col sm:flex-row justify-center gap-4 sm:gap-5">
-                        <a href="mailto:hello@example.com" class="group inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-accent text-white font-medium text-lg hover:bg-accentDark hover:shadow-xl hover:shadow-accent/20 hover:-translate-y-1 transition-all duration-300">
-                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"></path></svg>
-                            Kirim Email
-                            <span class="group-hover:translate-x-1 transition-transform">→</span>
-                        </a>
-                        <a href="#" class="group inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-white border-2 border-borderSoft text-textDark font-medium text-lg hover:border-textDark hover:-translate-y-1 transition-all duration-300 shadow-sm">
+                    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-5 min-h-[64px]">
+                        <!-- Dynamic Island Email Button -->
+                        <div id="islandContainer" class="relative group/island flex justify-center">
+                            <button id="emailIslandBtn" type="button" aria-expanded="false" class="group relative flex items-center justify-between rounded-full bg-accent text-white font-medium text-base sm:text-lg shadow-lg hover:shadow-xl hover:shadow-accent/20 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] select-none px-8 py-4 cursor-pointer">
+                                
+                                <!-- Collapsed State: "Kirim Email" -->
+                                <div id="islandCollapsed" class="flex items-center gap-3 whitespace-nowrap">
+                                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"></path></svg>
+                                    <span>Kirim Email</span>
+                                    <span class="group-hover:translate-x-1 transition-transform">→</span>
+                                </div>
+
+                                <!-- Expanded Dynamic Island State -->
+                                <div id="islandExpanded" class="hidden items-center gap-2.5 sm:gap-3.5 whitespace-nowrap island-pop">
+                                    <!-- Status Indicator & Icon -->
+                                    <div class="flex items-center gap-2 shrink-0">
+                                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                                        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" class="text-accentLight"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"></path></svg>
+                                    </div>
+                                    
+                                    <!-- Full Email Address -->
+                                    <span id="fullEmailText" class="font-mono text-xs sm:text-sm font-semibold tracking-tight text-white select-all px-1">
+                                        muha.ibnu.abbas@gmail.com
+                                    </span>
+
+                                    <!-- Copy Button -->
+                                    <span id="copyEmailBtn" role="button" tabindex="0" class="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/15 hover:bg-white/25 active:scale-95 text-xs font-medium text-white transition-all cursor-pointer">
+                                        <svg id="copyIcon" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184"></path>
+                                        </svg>
+                                        <span id="copyLabel">Salin</span>
+                                    </span>
+
+                                    <!-- Close Button -->
+                                    <span id="closeIslandBtn" role="button" tabindex="0" aria-label="Tutup" class="shrink-0 w-6 h-6 rounded-full bg-white/10 hover:bg-white/25 flex items-center justify-center text-white/70 hover:text-white transition-colors cursor-pointer">
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+                                        </svg>
+                                    </span>
+                                </div>
+                            </button>
+                        </div>
+
+                        <!-- LinkedIn Button -->
+                        <a href="https://www.linkedin.com/in/muhammad-abbas-230712392/" target="_blank" rel="noopener noreferrer" class="group inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-white border-2 border-borderSoft text-textDark font-medium text-lg hover:border-textDark hover:-translate-y-1 transition-all duration-300 shadow-sm shrink-0">
                             <!-- LinkedIn icon -->
                             <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
                             LinkedIn
@@ -817,9 +865,9 @@
                         <p class="text-textMuted text-sm font-medium">© 2026 Muhammad Ibnu Abbas. Designed with passion.</p>
                     </div>
                     <div class="flex items-center gap-6">
-                        <a href="#" class="text-textMuted text-sm font-medium hover:text-accent transition-colors link-underline">Instagram</a>
-                        <a href="#" class="text-textMuted text-sm font-medium hover:text-accent transition-colors link-underline">GitHub</a>
-                        <a href="#" class="text-textMuted text-sm font-medium hover:text-accent transition-colors link-underline">Twitter</a>
+                        <a href="https://www.instagram.com/muh.ibnu.abas/" target="_blank" rel="noopener noreferrer" class="text-textMuted text-sm font-medium hover:text-accent transition-colors link-underline">Instagram</a>
+                        <a href="https://github.com/CelesteChione" target="_blank" rel="noopener noreferrer" class="text-textMuted text-sm font-medium hover:text-accent transition-colors link-underline">GitHub</a>
+                        <a href="https://www.linkedin.com/in/muhammad-abbas-230712392/" target="_blank" rel="noopener noreferrer" class="text-textMuted text-sm font-medium hover:text-accent transition-colors link-underline">LinkedIn</a>
                     </div>
                 </div>
             </div>
@@ -945,6 +993,109 @@
             // Show/hide on enter/leave
             document.addEventListener("mouseenter", () => { cursorGlow.style.opacity = "1"; });
             document.addEventListener("mouseleave", () => { cursorGlow.style.opacity = "0"; });
+
+
+            // === 6. Dynamic Island Email Widget ===
+            const emailIslandBtn = document.getElementById("emailIslandBtn");
+            const islandContainer = document.getElementById("islandContainer");
+            const islandCollapsed = document.getElementById("islandCollapsed");
+            const islandExpanded = document.getElementById("islandExpanded");
+            const copyEmailBtn = document.getElementById("copyEmailBtn");
+            const closeIslandBtn = document.getElementById("closeIslandBtn");
+            const fullEmail = "muha.ibnu.abbas@gmail.com";
+            let isIslandOpen = false;
+
+            function openIsland() {
+                if (isIslandOpen) return;
+                isIslandOpen = true;
+                emailIslandBtn.setAttribute("aria-expanded", "true");
+
+                // Morph button into dark Dynamic Island
+                emailIslandBtn.classList.remove("bg-accent", "hover:bg-accentDark", "px-8", "py-4");
+                emailIslandBtn.classList.add("bg-[#18181B]", "ring-2", "ring-accent/40", "shadow-2xl", "shadow-black/35", "px-4", "py-3", "sm:px-5", "sm:py-3.5");
+
+                islandCollapsed.classList.add("hidden");
+                islandExpanded.classList.remove("hidden");
+                islandExpanded.classList.add("flex");
+            }
+
+            function closeIsland(e) {
+                if (e) e.stopPropagation();
+                if (!isIslandOpen) return;
+                isIslandOpen = false;
+                emailIslandBtn.setAttribute("aria-expanded", "false");
+
+                // Morph back into original button
+                emailIslandBtn.classList.remove("bg-[#18181B]", "ring-2", "ring-accent/40", "shadow-2xl", "shadow-black/35", "px-4", "py-3", "sm:px-5", "sm:py-3.5");
+                emailIslandBtn.classList.add("bg-accent", "hover:bg-accentDark", "px-8", "py-4");
+
+                islandExpanded.classList.remove("flex");
+                islandExpanded.classList.add("hidden");
+                islandCollapsed.classList.remove("hidden");
+            }
+
+            emailIslandBtn.addEventListener("click", () => {
+                if (!isIslandOpen) {
+                    openIsland();
+                }
+            });
+
+            closeIslandBtn.addEventListener("click", (e) => {
+                closeIsland(e);
+            });
+
+            // Close on click outside
+            document.addEventListener("click", (e) => {
+                if (isIslandOpen && !islandContainer.contains(e.target)) {
+                    closeIsland();
+                }
+            });
+
+            // Copy Email with clipboard API and fallback
+            copyEmailBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                const copyLabel = document.getElementById("copyLabel");
+                const copyIcon = document.getElementById("copyIcon");
+
+                const handleCopied = () => {
+                    copyLabel.textContent = "Tersalin!";
+                    copyEmailBtn.classList.add("bg-emerald-500/30", "text-emerald-300");
+                    copyEmailBtn.classList.remove("bg-white/15", "text-white");
+                    copyIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"></path>`;
+
+                    setTimeout(() => {
+                        copyLabel.textContent = "Salin";
+                        copyEmailBtn.classList.remove("bg-emerald-500/30", "text-emerald-300");
+                        copyEmailBtn.classList.add("bg-white/15", "text-white");
+                        copyIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184"></path>`;
+                    }, 2000);
+                };
+
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(fullEmail).then(handleCopied).catch(() => {
+                        fallbackCopy(fullEmail, handleCopied);
+                    });
+                } else {
+                    fallbackCopy(fullEmail, handleCopied);
+                }
+            });
+
+            function fallbackCopy(text, onSuccess) {
+                const ta = document.createElement("textarea");
+                ta.value = text;
+                ta.style.position = "fixed";
+                ta.style.left = "-9999px";
+                document.body.appendChild(ta);
+                ta.focus();
+                ta.select();
+                try {
+                    document.execCommand("copy");
+                    onSuccess();
+                } catch (err) {
+                    console.error("Copy failed", err);
+                }
+                document.body.removeChild(ta);
+            }
 
         });
     </script>
